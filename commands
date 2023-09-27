@@ -1,0 +1,974 @@
+Welcome to Elastic training
+
+Sl:No	URL Link	Username	Password
+1	https://cloud.palmeto.co.in	Pepsico-Elastic01	P@lmeto@456  Marco
+2	https://cloud.palmeto.co.in	Pepsico-Elastic02	P@lmeto@456  Najma
+3	https://cloud.palmeto.co.in	Pepsico-Elastic03	P@lmeto@456  manisha
+4	https://cloud.palmeto.co.in	Pepsico-Elastic04	P@lmeto@456  raashi
+5	https://cloud.palmeto.co.in	Pepsico-Elastic05	P@lmeto@456  trinath
+6	https://cloud.palmeto.co.in	Pepsico-Elastic06	P@lmeto@456  subash
+7	https://cloud.palmeto.co.in	Pepsico-Elastic07	P@lmeto@456  amit
+8	https://cloud.palmeto.co.in	Pepsico-Elastic08	P@lmeto@456  kiran
+9	https://cloud.palmeto.co.in	Pepsico-Elastic09	P@lmeto@456  dilip
+10	https://cloud.palmeto.co.in	Pepsico-Elastic10	P@lmeto@456  Anand Tiwari
+11	https://cloud.palmeto.co.in	Pepsico-Elastic11	P@lmeto@456  Tanisha
+12	https://cloud.palmeto.co.in	Pepsico-Elastic12	P@lmeto@456  Sakshi
+13	https://cloud.palmeto.co.in	Pepsico-Elastic13	P@lmeto@456  Srikanth
+14	https://cloud.palmeto.co.in	Pepsico-Elastic14	P@lmeto@456  Lourdes
+15	https://cloud.palmeto.co.in	Pepsico-Elastic15	P@lmeto@456  
+16	https://cloud.palmeto.co.in	Pepsico-Elastic16	P@lmeto@456   Jamil
+17	https://cloud.palmeto.co.in	Pepsico-Elastic17	P@lmeto@456
+18	https://cloud.palmeto.co.in	Pepsico-Elastic18	P@lmeto@456   Radhika
+19	https://cloud.palmeto.co.in	Pepsico-Elastic19	P@lmeto@456
+20	https://cloud.palmeto.co.in	Pepsico-Elastic20	P@lmeto@456
+21	https://cloud.palmeto.co.in	Pepsico-Elastic21	P@lmeto@456
+22	https://cloud.palmeto.co.in	Pepsico-Elastic22	P@lmeto@456
+23	https://cloud.palmeto.co.in	Pepsico-Elastic23	P@lmeto@456
+24	https://cloud.palmeto.co.in	Pepsico-Elastic24	P@lmeto@456
+25	https://cloud.palmeto.co.in	Pepsico-Elastic25	P@lmeto@456
+
+## elastic integration
+https://docs.elastic.co/integrations
+
+## connect to ubuntu node and switch to root user
+sudo su
+
+## get the laetst repo details
+apt update
+ 
+## Install latest patches
+apt upgrade -y
+
+# Installation instruction
+https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html
+
+## install elastic pgp key
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
+
+
+## install the transport https package
+apt-get install apt-transport-https -y
+
+## run the command to remove the wrong file
+rm /etc/apt/sources.list.d/elastic-8.x.list
+ 
+
+## Create apt file with source and url
+echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
+
+## get the laetst repo details
+apt update
+
+## install elastic search
+apt install elasticsearch -y
+
+![](/uploads/upload_da7d06d8d4822a3fcbfb227e6f912b74.png)
+
+## command to read the config file
+cat /etc/elasticsearch/elasticsearch.yml
+
+## reload the daemon
+systemctl daemon-reload
+
+## start elastic search
+systemctl start elasticsearch
+
+## check the status of elastic search
+systemctl status elasticsearch
+
+## enable auto start on reboot
+systemctl enable elasticsearch
+
+## access elastic on browser via rest api
+https://{ubuntu ip addrss}:9200
+
+## command to generate a new password for elastic
+/usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+
+## install kibana
+apt install kibana
+
+## start kibana
+systemctl start kibana
+
+## check the status of kibana
+systemctl status kibana
+
+## enable auto start on reboot
+systemctl enable kibana
+
+## edidt kibana config to listen on any interface
+vi /etc/kibana/kibana.yml
+
+
+## add 0.0.0.0 interface to server host
+server.host: "0.0.0.0"
+
+## restart kibana
+systemctl restart kibana
+
+## access kibana on browser 
+https://{ubuntu ip addrss}:5601
+
+## create a enroleent token for kibana
+/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+
+## get the verification otp of kibana
+/usr/share/kibana/bin/kibana-verification-code
+
+## command to set custom password
+/usr/share/elasticsearch/bin/elasticsearch-reset-password --interactive -u elastic
+
+## various subscruiptions
+https://www.elastic.co/subscriptions
+
+## get the cluster health
+GET _cluster/health
+
+## on command line
+ curl -k https://localhost:9200/_cluster/health
+ 
+## devtool json to list the index
+GET _cat/indices
+
+## create new index
+PUT my-index
+
+## close a index
+POST /my-index/_close
+
+## open a index
+POST /my-index/_open
+
+## create index with custom replicas and shards
+PUT my-test-index 
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 3,
+      "number_of_replicas": 2
+    }
+  }
+}
+
+## Create a document with in the index
+PUT my-index/_doc/1
+{
+  "year": 2023,
+  "city": "chennai",
+  "country": "india",
+  "population_M": 132.324
+}
+
+## Createa anothe document wth different id
+PUT my-index/_doc/2
+{
+  "year": 2023,
+  "city": "Banglore",
+  "country": "india",
+  "population_M": 120.324
+}
+
+## get the index
+GET my-index/_search
+
+## Create a document with auto id
+POST my-index/_doc/
+{
+  "year": 2023,
+  "city": "mumbai",
+  "country": "india",
+  "population_M": 100.324
+}
+
+## get the mapping of index
+GET my-index/_mapping
+
+
+## try to load a data with different data type
+POST my-index/_doc/
+{
+  "year": "2023",
+  "city": "delhi",
+  "country": "india",
+  "population_M": "80.12 million" 
+}
+
+## createa index with pre defined mapping
+PUT my-explicit-index1
+{
+  "mappings": {
+    "properties": {
+      "year": {
+        "type": "integer"
+      },
+      "city": {
+        "type": "keyword"
+      },
+      "country": {
+        "type": "keyword"
+      },
+      "population_M": {
+        "type": "float"
+      },
+      "attacgtions": {
+        "type": "text"
+      }
+    }
+  }
+}
+
+## elastic search mapping types
+https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html
+
+## post document to explisite index
+POST my-explicit-index1/_doc
+{
+  "year": "2023",
+  "city": "mumbai",
+  "country": "india",
+  "population_M": 4.936,
+  "attractions": "india gate, taj,"
+}
+
+## get the document
+GET my-explicit-index1/_search
+
+## object data 
+PUT my-index-000001/_doc/1
+{ 
+  "region": "US",
+  "manager": { 
+    "age":     30,
+    "name": { 
+      "first": "John",
+      "last":  "Smith"
+    }
+  }
+}
+
+## repo with toc
+https://github.com/sathishbob/elasstic
+
+## elstic routing archecture
+https://blog.devgenius.io/elasticsearch-architecture-vi-routing-f88e7fb390d7
+https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shard-routing.html
+
+## to get count of documents
+GET my-index-000001/_count
+
+## array in index
+PUT my-index-000002/_doc/1
+{
+  "message": "some arrays in this document...",
+  "tags":  [ "elasticsearch", "wow" ], 
+  "lists": [ 
+    {
+      "name": "prog_list",
+      "description": "programming list"
+    },
+    {
+      "name": "cool_list",
+      "description": "cool stuff list"
+    }
+  ]
+}
+
+PUT my-index-000002/_doc/2 
+{
+  "message": "no arrays in this document...",
+  "tags":  "elasticsearch",
+  "lists": {
+    "name": "prog_list",
+    "description": "programming list"
+  }
+}
+
+## the data will be falltened in the backend as 
+"lists.name": ["prog_list", "cool_list"]
+
+## Search with tag field
+GET my-index-000002/_search
+{
+  "query": {
+    "match": {
+      "tags": "elasticsearch" 
+    }
+  }
+}
+
+## to user wild character in the sting search
+GET my-index-000002/_search
+{
+  "query": {
+    "query_string": {
+      "query": "elastic*" ,
+      "default_field": "tags"
+    }
+  }
+}
+
+## query string documentation
+https://www.elastic.co/guide/en/elasticsearch/reference/current/full-text-queries.html
+
+
+## query for a string
+GET my-index-000002/_search
+{
+  "query": {
+    "query_string": {
+      "query": "*wow*" 
+    }
+  }
+}
+
+## query based on the array value
+GET my-index-000002/_search
+{
+  "query": {
+    "query_string": {
+      "query": "*cool*",
+      "default_field": "lists.name"
+    }
+  }
+}
+
+## index with nested
+PUT stores
+{
+  "mappings": {
+     "properties": {
+        "suburb": {
+           "type": "keyword"
+         },
+         "product": {
+            "type": "nested"
+          }
+      }
+   }
+}
+
+## create document inside the index
+POST stores/_doc
+{
+   "suburb":"Carlton",
+   "product":[
+      {
+         "product":"i20 Hatch",
+         "quantity":21
+      },
+      {
+         "product":"i30 Sport",
+         "quantity":300
+      }
+   ]
+}
+
+## create another document
+POST stores/_doc
+{
+   "suburb":"Fitzroy",
+   "product":[
+      {
+         "product":"Mustang",
+         "quantity":10
+      },
+      {
+         "product":"i20 Hatch",
+         "quantity":10
+      }
+   ]
+}
+
+
+## search with nested field
+GET stores/_search
+{
+  "query": {
+    "nested": {
+      "path": "product",
+      "query": {
+        "bool": {
+          "must": [
+            {"match": {"product.product.keyword": "Mustang"}}
+          ]
+        }
+      }
+    }
+  }
+}
+
+## multi filter in nested index
+GET stores/_search
+{
+  "query": {
+    "nested": {
+      "path": "product",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "product.product.keyword": "i30 Sport"
+              }
+            },
+            {
+              "range": {
+                "product.quantity": { "lt": 50 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+## sucess with two document
+GET stores/_search
+{
+  "query": {
+    "nested": {
+      "path": "product",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "product.product.keyword": "i20 Hatch"
+              }
+            },
+            {
+              "range": {
+                "product.quantity": { "lt": 25 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+## sucess with one document
+GET stores/_search
+{
+  "query": {
+    "nested": {
+      "path": "product",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "product.product.keyword": "i20 Hatch"
+              }
+            },
+            {
+              "range": {
+                "product.quantity": { "lt": 20 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+## should condition in nested
+ "bool": {
+            "should": [
+              {
+                "term": {
+                  "brandsvisited": "adidas"
+                }
+              },
+              {
+                "term": {
+                  "brandsvisited": "skechers"
+                }
+              }
+            ],
+            "minimum_should_match": 1
+          }
+        }
+        
+
+
+## Get heap memory usage
+GET _cat/nodes?h=heap*&v
+
+## install git
+apt install git -y
+
+## cd to /home/palmeto
+cd /home/palmeto/
+
+## clone the repo
+git clone https://github.com/sathishbob/elasstic.git
+
+## go inside elastic dir
+cd elasstic/
+
+
+## pull the latest code
+git pull
+
+## install curl
+apt install curl -y
+
+## Create index template from centos machine
+curl -f -k -XPUT "https://{elastic-ip}:9200/_index_template/web-logs" -u elastic:{your elastic password} -H 'Content-Type: application/json' -d "@web-log-template.json"
+
+## Create index template from elastic mahine
+curl -f -k -XPUT "https://localhost:9200/_index_template/web-logs" -u elastic:{your elastc password} -H 'Content-Type: application/json' -d "@web-log-template.json"
+
+## command to list temlates
+GET _cat/templates/
+
+
+## get the template from elastic
+GET /_index_template/web-logs
+
+
+## sample log
+f=p36%2Cb447%2Cb145%2C1130%7C6&page=0&o66.249.66.194 - - [20/Sep/2023:04:09:32 +0330] "GET /filter?=1130 HTTP/1.1" 302 0 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" "-"
+
+## grok pattern
+^%{IP:ip} - - \[%{HTTPDATE:timestamp}\] "%{WORD:verb} %{DATA:request}" %{NUMBER:status} %{NUMBER:bytes}
+
+
+## do git pull toe get the pipline file
+git pull
+
+## create pipeline with json
+curl -f -k -XPUT "https://{elastic-ip}:9200/_ingest/pipeline/web-logs" -u elastic:{your elastc password} -H 'Content-Type: application/json' -d "@web-logs-pipeline.json"
+
+## install log stash
+apt install logstash
+
+## do a git pull n elastic server (ubuntu)
+git pull
+
+## edit the conf file tand add your elastic password
+nano web-logs-logstash.conf
+
+#change the hosts url
+hosts => "https://localhost:9200"
+
+# enter your elastic password
+password => 
+
+## to save
+CTRL+o -- enter -- CTRL+x
+
+## run the logstash with the config
+/usr/share/logstash/bin/logstash -f /home/palmeto/elasstic/web-logs-logstash.conf < web.log
+
+## get server cer to file
+echo -n | openssl s_client -connect localhost:9200 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > ./ca_logstash.cer
+
+## install java
+apt install default-jdk -y
+
+## import the key
+keytool -import -alias elastic -file ca_logstash.cer -keystore /usr/share/logstash/jdk/lib/security/cacerts
+
+password: changeit
+
+## run the logstash with the config
+/usr/share/logstash/bin/logstash -f /home/palmeto/elasstic/web-logs-logstash.conf < web.log
+
+
+## get the documents from the index
+GET web-logs/_search
+
+## query records with status code as 200
+GET web-logs/_search
+{
+ "query": {
+    "term": {
+      "http.response.status_code": { "value": "200" }
+    }
+  }
+}
+
+
+## quey with multiple fiilters
+GET web-logs/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        { "term": {
+            "http.response.status_code": { "value": "200" }
+          }
+        }
+      ], 
+      "must": [
+        { "term": {
+            "http.request.method": { "value": "POST" }
+          }
+        }
+      ]
+    }
+  }
+}
+
+## filter using match
+GET web-logs/_search
+{
+  "query": {
+    "match": {
+      "event.original":{
+        "query": "refrigerator windows",
+        "operator": "and"
+      }
+    }
+  }
+}
+
+## filter using term
+GET web-logs/_search
+{
+  "query": {
+    "terms": {
+      "source.geo.country_name": [
+        "South Africa",
+        "Ireland",
+        "Hong Kong"
+      ]
+    }
+  }
+}
+
+## aggerate
+GET web-logs/_search?size=0
+{
+  "query": {
+    "range": {
+      "@timestamp": {
+        "gte": "2023-09-23T00:00:00.000Z",
+        "lt": "2023-09-24T00:00:00.000Z"
+      }
+    }
+  },
+  "aggs": {
+    "bytes_served": {
+      "sum": {
+        "field": "http.response.body.bytes"
+      }
+    }
+  }
+}
+
+## aggregate 
+GET web-logs/_search?size=0
+{
+  "query": {
+    "range": {
+        "@timestamp": {
+          "gte": "2023-09-23T00:00:00.000Z",
+          "lt": "2023-09-24T00:00:00.000Z"
+        }
+      }
+  },
+  "aggs": {
+    "hourly": {
+      "date_histogram": {
+        "field": "@timestamp",
+        "fixed_interval": "1h"
+      },
+      "aggs": {
+        "bytes_served": {
+          "sum": { "field": "http.response.body.bytes" }
+        }
+      }
+    }
+  }
+}
+
+
+##  must with 2 queries
+GET web-logs/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "term": {
+            "http.response.status_code": { "value": "200" }
+            
+          }
+        },
+        { "term": {
+            "http.request.method": { "value": "POST" }
+            
+          }
+        }
+      ] 
+    }
+  }
+}
+}
+
+## conenct to centos and install updates
+  yum update
+## elastic url 
+  https://www.elastic.co/guide/en/elasticsearch/reference/current/rpm.html
+## install signing key
+  rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+## create a file
+      vi /etc/yum.repos.d/elasticsearch.repo
+## put the contenet
+[elasticsearch]
+name=Elasticsearch repository for 8.x packages
+baseurl=https://artifacts.elastic.co/packages/8.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=0
+autorefresh=1
+type=rpm-md
+  
+## install file beat
+yum install --enablerepo=elasticsearch filebeat -y
+
+## filebeat module
+https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-modules.html
+
+
+## edit the filebeat yaml
+vi /etc/filebeat/filebeat.yml
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["{elastic ip}:9200"]
+
+  # Protocol - either `http` (default) or `https`.
+  protocol: "https"
+
+  # Authentication credentials - either API key or username/password.
+  #api_key: "id:api_key"
+  username: "elastic"
+  password: "{your password}"
+  ssl.verification_mode: "none"
+## enable system module
+filebeat modules enable system
+
+vi /etc/filebeat/modules.d/system.yml
+ enabled: true
+
+## setup kibana 
+filebeat setup --pipelines -E "setup.kibana.host=192.168.11.87:5601" --modules system -M "system.syslog.enabled=true" -M "system.auth.enabled=true"
+## setup kibana with dashboard
+filebeat setup --dashboards  --pipelines -E "setup.kibana.host=192.168.11.87:5601" --modules system -M "system.syslog.enabled=true" -M "system.auth.enabled=true"
+
+## filebeat .yaml with custom index name
+setup.template.name: "centos"
+setup.template.pattern: "centos-%{[agent.version]}"
+setup.dashboard.index: "centos-*"
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["192.168.11.87:9200"]
+
+  # Protocol - either `http` (default) or `https`.
+  protocol: "https"
+
+  # Authentication credentials - either API key or username/password.
+  #api_key: "id:api_key"
+  username: "elastic"
+  password: "training"
+  ssl.verification_mode: "none"
+  index: "centos-%{+yyyy.MM.dd}"
+
+## restart file beat
+systemctl restart filebeat
+
+## install epel release
+yum install epel-release -y
+yum install nginx -y
+
+
+## start and enable nginx
+systemctl start nginx
+systemctl enable nginx
+
+## stop filrewall
+systemctl stop firewalld
+
+
+## check nginx log files were created
+ls -l /var/log/nginx/
+
+## enable nginx module
+filebeat modules enable nginx
+
+## enable the logfiles
+vi /etc/filebeat/modules.d/nginx.yml
+
+# Module: nginx
+# Docs: https://www.elastic.co/guide/en/beats/filebeat/8.10/filebeat-module-nginx.html
+
+- module: nginx
+  # Access logs
+  access:
+    enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+  # Error logs
+  error:
+    enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+## setup pipline and dash board
+filebeat setup -E "setup.kibana.host={elastic ip}:5601" --modules nginx --dashboards --pipelines -M "nginx.access.enabled=true" -M "nginx.error.enabled=true"
+
+## test filebeat config
+filebeat test config
+
+## test filebeat connectivity
+filebeat test output
+  
+## restart filebeat
+systemctl restart filebeat
+
+#### metric beat
+
+## install metric beat
+yum install --enablerepo=elasticsearch metricbeat
+
+# edit metribeat yaml
+vi /etc/metricbeat/metricbeat.yml
+
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["192.168.11.87:9200"]
+
+  # Protocol - either `http` (default) or `https`.
+  protocol: "https"
+
+  # Authentication credentials - either API key or username/password.
+  #api_key: "id:api_key"
+  username: "elastic"
+  password: "training"
+  ssl.verification_mode: "none"
+
+## enable metric beat
+metricbeat modules enable system
+
+## setup kibana
+metricbeat setup -E "setup.kibana.host=192.168.11.87:5601"
+
+## start metricbeat
+systemctl restart metricbeat
+systemctl status metricbeat
+
+## kql document
+https://www.elastic.co/guide/en/kibana/current/kuery-query.html
+
+## metric beat reference
+https://www.elastic.co/guide/en/beats/metricbeat/current/index.html
+
+## audit beat
+ yum install --enablerepo=elasticsearch auditbeat
+
+## packet beat
+ yum install --enablerepo=elasticsearch packetbeat
+
+## get index pressure details
+GET /_nodes/stats/indexing_pressure
+
+  
+### logstash
+vi logstash-first.conf
+
+input {
+    stdin {}
+}
+
+filter {
+    mutate {
+      add_field => { "description" => "testing first job" }
+    }
+}
+
+output {
+   stdout {}
+}
+
+## first pipleine
+echo 'testing logstash' | /usr/share/logstash/bin/logstash -f /home/palmeto/elasstic/logstash-first.conf
+
+echo -e 'testing logstash1 \ntesting logstash2' | /usr/share/logstash/bin/logstash -f /home/palmeto/elasstic/logstash-first.conf 
+  
+## cd to the repo dir
+cd /home/palmeto/elasstic
+
+## do a git pull
+git pull
+
+## go inside csv folder
+cd csv
+
+## edit conf file
+nano logstash-taxi.conf
+
+##execute log stash
+/usr/share/logstash/bin/logstash -f /home/palmeto/elasstic/csv/logstash-taxi.conf
+#
+
+### parsing sys log
+
+cd /home/palmeto/elasstic
+cd syslog
+
+## run the syslog
+/usr/share/logstash/bin/logstash -f /home/palmeto/elasstic/syslog/logstash-syslog.conf < linux-system.log
+
+## feed back link
+https://forms.office.com/r/6eWUarbm2R
+
+### look of data
+cd /home/palmeto/elasstic
+git pull
+cd lookup
+
+nano logstash-firewall-enrich.conf
+
+/usr/share/logstash/bin/logstash -f /home/palmeto/elasstic/lookup/logstash-firewall-enrich.conf < firewall.log
+
+
+### beats to logstash
+cd /home/palmeto/elasstic
+git pull
+cd filebeat
+
+
+nano filebeat.yml
+
+filebeat.inputs:
+- type: log
+  paths:
+    - /home/palmeto/elasstic/filebeat/access.log
+
+output.logstash:
+  hosts: ["127.0.0.1:5044"]
+
+
+## run logstash
+ /usr/share/logstash/bin/logstash -f /home/palmeto/elasstic/filebeat/logstash-filebeat.conf
+
+## createa  new putty session
+sudo su
+cd elasstic/filebeat/
+apt install filebeat
+
+ /usr/share/filebeat/bin/filebeat -c /home/palmeto/elasstic/filebeat/filebeat.yml
+
+
+
